@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     >
 <view
-	class="net.neoturbine.horus.view.OrbitDiagram"
+	class="net.neoturbine.horus.view.GraphView"
 	android:id="@+id/orbit"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"

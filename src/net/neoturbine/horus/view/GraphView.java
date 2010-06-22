@@ -8,19 +8,20 @@ import android.util.AttributeSet;
 import android.view.View;
 
 //TODO: javadoc
-public class OrbitDiagram extends View {
+public class GraphView extends View {
 	int widthMeasureSpec;
 	int heightMeasureSpec;
 	float[] _data;
-	Paint _paint;
+	Paint _pointPaint;
+	Paint _tickPaint;
 	
-	public OrbitDiagram(Context context) {
+	public GraphView(Context context) {
 		super(context);
 	}
-	public OrbitDiagram(Context context, AttributeSet attrs) {
+	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-	public OrbitDiagram(Context context, AttributeSet attrs, int defStyle) {
+	public GraphView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 	
@@ -38,7 +39,9 @@ public class OrbitDiagram extends View {
 					(_data[i]-minS)/(maxS-minS) *
 					View.MeasureSpec.getSize(this.heightMeasureSpec);
 		}
-		_paint = new Paint();
+		_pointPaint = new Paint();
+		_tickPaint = new Paint();
+		_tickPaint.setColor(Color.DKGRAY);
 		invalidate();
 	}
 	
@@ -52,7 +55,11 @@ public class OrbitDiagram extends View {
 	protected void onDraw(Canvas canvas) {
 		if(_data != null) {
 			canvas.drawColor(Color.WHITE);
-			canvas.drawPoints(_data, _paint);
+			canvas.drawPoints(_data, _pointPaint);
+			
+			//draw axes
+			canvas.drawLine(0, 0, 0, heightMeasureSpec, _tickPaint);
+			canvas.drawLine(0, 0, widthMeasureSpec, 0, _tickPaint);
 		}
 	}
 	
