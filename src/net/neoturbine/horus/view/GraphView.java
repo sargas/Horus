@@ -29,19 +29,25 @@ public class GraphView extends View {
 			float minA, float minS,
 			float maxA, float maxS) {
 		_data = data;
-		for(int i = 0; i < data.length;++i) {
+		
+		final int width = View.MeasureSpec.getSize(this.widthMeasureSpec);
+		final int height = View.MeasureSpec.getSize(this.heightMeasureSpec);
+		final float factorA = width/(maxA-minA);
+		final float factorS = height/(maxS-minS);
+		final float constFactorA = factorA * minA;
+		final float constFactorS = factorS * minS;
+		final int dataLength = data.length;
+		
+		for(int i = 0; i < dataLength;++i) {
 			if(i%2==0)
-				data[i] = 
-					(_data[i]-minA)/(maxA-minA) *
-					View.MeasureSpec.getSize(this.widthMeasureSpec);
+				_data[i] = _data[i]*factorA - constFactorA;
 			else
-				_data[i] =
-					(_data[i]-minS)/(maxS-minS) *
-					View.MeasureSpec.getSize(this.heightMeasureSpec);
+				_data[i] = _data[i]*factorS - constFactorS;
 		}
 		_pointPaint = new Paint();
 		_tickPaint = new Paint();
 		_tickPaint.setColor(Color.DKGRAY);
+		_tickPaint.setStrokeWidth(10);
 		invalidate();
 	}
 	
@@ -58,8 +64,8 @@ public class GraphView extends View {
 			canvas.drawPoints(_data, _pointPaint);
 			
 			//draw axes
-			canvas.drawLine(0, 0, 0, heightMeasureSpec, _tickPaint);
-			canvas.drawLine(0, 0, widthMeasureSpec, 0, _tickPaint);
+			canvas.drawLine(0, 0, 10, heightMeasureSpec, _tickPaint);
+			canvas.drawLine(0, 0, widthMeasureSpec, 10, _tickPaint);
 		}
 	}
 	
